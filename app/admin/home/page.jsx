@@ -240,12 +240,12 @@ export default function LandingPage() {
                 <h1 className="text-2xl font-light">
                     Hi {profile?.name}
                 </h1>
-                {/* <Button
+                <Button
                     onClick={() => setAddCar(!addCar)}
                     className="bg-green-500 hover:bg-green-600 hover:cursor-pointer transition-all duration-300 ease-in-out"
                 >
                     Add Car
-                </Button> */}
+                </Button>
             </div>
 
             {/* ✅ Modal Add Car */}

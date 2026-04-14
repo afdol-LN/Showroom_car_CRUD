@@ -76,8 +76,10 @@ export const handleSignIn = async (fromData) => {
 
         console.log("data : ", data)
         // console.log("profile : ", profile)
+        if(data.user){
+            redirect('/home')
+        }
         
-        redirect('/home')
 
     }
     console.log("signi n is complete")

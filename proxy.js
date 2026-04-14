@@ -27,18 +27,37 @@ export async function proxy(request) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isHomeRoute = request.nextUrl.pathname.startsWith("/home");
-  const isLoginRoute = request.nextUrl.pathname === "/";
+  const { data: { userRole }, error } = await supabase.from('users')
+    .select('role')
+    .eq('email', user.email)
+    .single();
 
-  if (!user && isHomeRoute) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (userRole === 2) {
+    const isHomeRoute = request.nextUrl.pathname.startsWith("/home");
+    const isLoginRoute = request.nextUrl.pathname === "/";
+
+    if (!user && isHomeRoute) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (user && isLoginRoute) {
+      return NextResponse.redirect(new URL("/admin/home", request.url));
+    }
   }
+  else if(userRole === 1){
+    const isHomeRoute = request.nextUrl.pathname.startsWith("/home");
+    const isLoginRoute = request.nextUrl.pathname === "/";
 
-  if (user && isLoginRoute) {
-    return NextResponse.redirect(new URL("/home", request.url));
+    if (!user && isHomeRoute) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (user && isLoginRoute) {
+      return NextResponse.redirect(new URL("/home", request.url));
+    }
+
+    return response;
   }
-
-  return response;
 }
 
 export const config = {
